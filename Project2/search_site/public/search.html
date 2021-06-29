@@ -1,0 +1,109 @@
+<form class="form-horizontal" role="form">
+    <div class="row" style="margin-bottom: 10px;">
+        <label class="col-lg-2 control-label">标题关键字</label>
+        <div class="col-lg-3">
+            <input type="text" class="form-control" placeholder="标题关键字" ng-model="$parent.title1">
+        </div>
+        <div class="col-lg-2">
+            <select class="form-control" autocomplete="off" ng-model="$parent.selectTitle">
+                <option selected="selected">AND</option>
+                <option>OR</option>
+
+            </select>
+        </div>
+        <div class="col-lg-3">
+            <input type="text" class="form-control" placeholder="标题关键字" ng-model="$parent.title2">
+        </div>
+    </div>
+
+    <div class="row" style="margin-bottom: 10px;">
+        <label class="col-lg-2 control-label">内容关键字</label>
+        <div class="col-lg-3">
+            <input type="text" class="form-control" placeholder="内容关键字" ng-model="$parent.content1">
+        </div>
+        <div class="col-lg-2">
+            <select class="form-control" autocomplete="off" ng-model="$parent.selectContent">
+                <option selected="selected">AND</option>
+                <option>OR</option>
+            </select>
+        </div>
+        <div class="col-lg-3">
+            <input type="text" class="form-control" placeholder="内容关键字" ng-model="$parent.content2">
+        </div>
+    </div>
+
+    <div class="row" style="margin-bottom: 10px;">
+        <label class="col-lg-2 control-label">作者关键字</label>
+        <div class="col-lg-3">
+            <input type="text" class="form-control" placeholder="作者关键字" ng-model="$parent.author">
+        </div>
+        <div class="col-lg-2">
+            <label>来源关键字</label>
+        </div>
+        <div class="col-lg-3">
+            <input type="text" class="form-control" placeholder="来源关键字" ng-model="$parent.source">
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="col-md-offset-9">
+            <button type="submit" class="btn btn-default" ng-click="search()">查询</button>
+        </div>
+    </div>
+
+</form>
+
+<!--显示查询结果-->
+<div ng-show="isisshowresult" style="padding:0 1em;">
+
+    <p><b>共 {{datasize}} 条记录</b></p>
+
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <td>序号</td>
+                <td>标题</td>
+                <td>作者</td>
+                <td>关键词</td>
+                <td>来源</td>
+                <td>发布时间</td>
+            </tr>
+
+        </thead>
+        <tbody>
+        <tr ng-repeat="(key, item) in items">
+            <td>{{index+key}}</td>
+            <td><a href={{item.url}}>{{item.title}}</a></td>
+            <td>{{item.author}}</td>
+            <td>{{item.keywords}}</td>
+            <td>{{item.source_name}}</td>
+            <td>{{item.publish_date}}</td>
+        </tr>
+
+        </tbody>
+    </table>
+
+    <div class="row">
+<!--        <div class="form-group">-->
+        <div class="pull-left" style="margin-top: 12px;">
+            <button type="submit" class="btn btn-primary" ng-click="searchsortASC()" >发布时间升序</button>
+            <button type="submit" class="btn btn-primary" ng-click="searchsortDESC()">发布时间降序</button>
+        </div>
+<!--        </div>-->
+        <div class="pull-right">
+            <nav>
+                <ul class="pagination">
+                    <li>
+                        <a ng-click="Previous()" role="button"><span role="button">上一页</span></a>
+                    </li>
+                    <li ng-repeat="page in pageList" ng-class="{active:isActivePage(page)}" role="button">
+                        <a ng-click="selectPage(page)" >{{ page }}</a>
+                    </li>
+                    <li>
+                        <a ng-click="Next()" role="button"><span role="button">下一页</span></a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+</div>

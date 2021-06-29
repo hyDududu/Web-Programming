@@ -1,0 +1,179 @@
+<html ng-app="manage">
+
+<head>
+    <meta charset="utf-8">
+    <title>Users</title>
+
+    <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+    <script src="http://cdn.bootcss.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts@4.7.0/dist/echarts.min.js"></script>
+    <script src='javascripts/dist/echarts-wordcloud.min.js'></script>
+    <script src="/angular/angular.min.js"></script>
+
+    <script src="javascripts/manage.js" type="text/javascript"></script>
+
+</head>
+
+<body ng-controller="manage_Ctrl">
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="#">Users</a>
+            </div>
+            <div id="navbar" class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li><a ng-href="/news.html">检索</a></li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">图片<span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a ng-href="/news.html">柱状图</a></li>
+                            <li><a ng-href="/news.html"></a></li>
+                            <li><a ng-href="/news.html">折线图</a></li>
+                            <li><a ng-href="/news.html">词云</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">账号管理<span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li class="dropdown-header">账号</li>
+                            <li><a ng-href="#">管理</a></li>
+                            <li><a ng-click="logout()">退出登录</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <form class="form-horizontal" role="form">
+        <!-- 填充顶部 -->
+        <div class="row" style="margin-bottom: 20px;">
+            <label class="col-lg-2 control-label"></label>
+        </div>
+        <div class="row" style="margin-bottom: 20px;">
+            <label class="col-lg-2 control-label"></label>
+        </div>
+        <div class="row" style="margin-bottom: 10px;">
+            <label class="col-lg-2 control-label"></label>
+        </div>
+
+        <div class="row" style="margin-bottom: 10px; padding:0 10em;">
+            <div class="col-lg-3">
+                <button type="button" ng-click="searchUser()">查询所有用户</button>
+            </div>
+        </div>
+
+        <!-- -------------------- -->
+
+        <div class="row" style="margin-bottom: 10px; padding:0 10em;">
+            <div class="col-lg-3">
+                <input type="text" class="form-control" placeholder="赋权用户名" ng-model="$parent.user_power">
+            </div>
+            <div class="col-lg-2">
+                <button type="submit" class="btn btn-default" ng-click="power()">设为管理员</button>
+            </div>
+
+            <div class="col-lg-3">
+                <input type="text" class="form-control" placeholder="去权用户名" ng-model="$parent.user_unpower">
+            </div>
+            <div class="col-lg-1">
+                <button type="submit" class="btn btn-default" ng-click="unpower()">取消管理员</button>
+            </div>
+        </div>
+
+        <div class="row" style="margin-bottom: 10px; padding:0 10em;">
+            <div class="col-lg-3">
+                <input type="text" class="form-control" placeholder="冻结用户名" ng-model="$parent.user_freeze">
+            </div>
+            <div class="col-lg-2">
+                <button type="submit" class="btn btn-default" ng-click="freeze()">冻结用户</button>
+            </div>
+
+            <div class="col-lg-3">
+                <input type="text" class="form-control" placeholder="解冻用户名" ng-model="$parent.user_unfreeze">
+            </div>
+            <div class="col-lg-1">
+                <button type="submit" class="btn btn-default" ng-click="unfreeze()">解冻用户</button>
+            </div>
+        </div>
+
+        <div class="row" style="margin-bottom: 10px; padding:0 10em;">
+            <div class="col-lg-3">
+                <input type="text" class="form-control" placeholder="查询用户名" ng-model="$parent.user_history">
+            </div>
+            <div class="col-lg-2">
+                <button type="submit" class="btn btn-default" ng-click="history()">查询用户历史</button>
+            </div>
+        </div>
+
+
+        <div ng-show="isShowUsers" style="padding:0 10em;">
+            <p><b>共 {{user_num}} 位用户</b></p>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <td>用户名</td>
+                        <td>权限</td>
+                        <td>状态</td>
+                    </tr>
+
+                </thead>
+                <tbody>
+                    <tr ng-repeat="user in users">
+                        <td>{{user.username}}</td>
+                        <td>{{user.power}}</td>
+                        <td>{{user.state}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div ng-show="isShowHistorys" style="padding:0 5em;">
+            <p><b>用户 {{user_history}} 共有 {{history_num}} 条历史记录</b></p>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <td>请求时间</td>
+                        <td>请求方式</td>
+                        <td>请求内容</td>
+                        <td>响应状态</td>
+                        <td>地址</td>
+                    </tr>
+
+                </thead>
+                <tbody>
+                    <tr ng-repeat="history in historys">
+                        <td>{{history.request_time}}</td>
+                        <td>{{history.request_method}}</td>
+                        <td>{{history.request_url}}</td>
+                        <td>{{history.status}}</td>
+                        <td>{{history.remote_addr}}</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="row">
+                <div class="pull-right">
+                    <nav>
+                        <ul class="pagination">
+                            <li>
+                                <a ng-click="Previous()" role="button"><span role="button">上一页</span></a>
+                            </li>
+                            <li ng-repeat="page in pageList" ng-class="{active:isActivePage(page)}" role="button">
+                                <a ng-click="selectPage(page)">{{ page }}</a>
+                            </li>
+                            <li>
+                                <a ng-click="Next()" role="button"><span role="button">下一页</span></a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+        </div>
+
+    </form>
+
+</body>
+
+</html>

@@ -1,0 +1,70 @@
+body {
+  margin: 0 2 0 2;
+}
+
+/* 头部样式 */
+.header {
+  background-color: #f0fff0;
+  padding         : 1px;
+  text-align      : center;
+}
+
+/* 导航条 */
+.topnav {
+  overflow        : hidden;
+  background-color: #8dca89;
+}
+
+/* 导航链接 */
+.topnav a {
+  float          : left;
+  display        : block;
+  color          : #f2f2f2;
+  text-align     : center;
+  padding        : 10px 20px;
+  text-decoration: none;
+  border-right   : 1px solid #fff;
+}
+
+/* 链接 - 修改颜色 */
+.topnav a:hover {
+  background-color: #3a833d;
+}
+
+/* 搜索框 */
+.searchbox {
+  height       : 2em;
+  font-size    : 1em;
+  border-radius: 20px;
+  border       : 4px solid #c7e5c3;
+  padding      : 5 1em;
+}
+
+#header {
+  height: 40px;
+}
+
+#header-right {
+  position     : absolute;
+  width        : 25px;
+  height       : 25px;
+  border-radius: 5px;
+  background   : red;
+  color        : #fff;
+  right        : 5px;
+  top          : 5px;
+  text-align   : center;
+}
+
+.table {
+  margin          : 10px auto;
+  border          : dotted;
+  border-color    : #aad8a6;
+  background-color: #f2f9f1;
+  /* align        :center; */
+}
+
+/* .cardLayout:hover {
+  background-color: #70be72;
+  color           : white;
+} */
