@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<header>
+    <script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.js"></script>
+    <!-- 引入css样式文件 -->
+    <link rel="stylesheet" type="text/css" href="style.css">
+</header>
+
+<body>
+    <div class="header">
+        <h1>
+            <font color="#58b36c">新闻查询网站</font>
+        </h1>
+    </div>
+    <div class="topnav">
+        <a href="search.html">新闻搜索</a>
+        <a href="#">热度分析</a>
+    </div>
+
+
+    <form>
+        <p style="padding:0 10em">
+            <input class="searchbox" type="text" name="keywords_text" placeholder="搜索关键词">
+            <input class="searchbox" type="button" value="查询" onclick="searchKey();"></input>
+        </p>
+    </form>
+
+
+    <div class="cardLayout" style="margin: 10px 10px">
+        <table class="table" width="100%" id="record" border="1"></table>
+    </div>
+    <script>
+        function searchKey() {
+            $.get('/keywords_get?keywords=' + $("input:text").val(), function (data) {
+                $("#record").empty();
+                $("#record").append('<tr class="cardLayout"><th>日期</th><th>热度</th></tr>');
+                var Date = new Array();  // 定义一个字典
+                for (let i = 0; i < data.length; i++) {
+                    var publish_date = data[i].publish_date.substring(0, 10);
+                    if (publish_date in Date) {
+                        Date[publish_date] += 1;
+                    }
+                    else {
+                        Date[publish_date] = 1;
+                    }
+                }
+                var dateSort = Object.keys(Date).sort();  // dateSort是Date按key排序后的字典，其可以为0~n序号，value为排序后的Date的key
+
+                let table = '';
+                for (var key in dateSort) {
+                    table += '<tr class="cardLayout"><td>';
+                    table += (dateSort[key] + '</td><td>' + Date[dateSort[key]] + '</td></tr>')
+                }
+                $("#record").append(table);
+                $("#record").append('<p>共 ' + data.length + ' 条新闻纪录</p>');
+            });
+        }
+    </script>
+
+</body>
+</html>

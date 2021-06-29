@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<header>
+    <script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.js"></script>
+    <!-- 引入css样式文件 -->
+    <link rel="stylesheet" type="text/css" href="style.css">
+</header>
+
+<body>
+    <div class="header">
+        <h1>
+            <font color="#58b36c">新闻查询网站</font>
+        </h1>
+    </div>
+    <div class="topnav">
+        <a href="#">新闻搜索</a>
+        <a href="heat.html">热度分析</a>
+    </div>
+
+
+    <form>
+        <p style="padding:0 10em">
+            <!-- <select name="search_item" class="searchbox">
+                <option value="title">title</option>
+                <option value="author">author</option>
+                <option value="keywords">keywords</option>
+            </select> -->
+            <input class="searchbox" type="text" name="title_text" placeholder="搜索标题">
+            <input class="searchbox" type="text" name="keywords_text" placeholder="搜索关键词">
+            <input class="searchbox" type="text" name="author_text" placeholder="搜索作者">
+            <input class="searchbox" type="button" value="查询" onclick="search();"></input>
+        </p>
+    </form>
+
+
+    <div class="cardLayout" style="margin: 10px 10px">
+        <table class="table" width="100%" id="record" border="1"></table>
+        <!--border：边线填充-->
+    </div>
+    <script>
+        function search() {
+            // console.log("111111"+$("input[name='title_text']").val()+ $("input[name='keywords_text']").val());
+            // $.get('/process_get?title=' + $("input:text").val(), function (data) {
+            $.get('/process_get?title=' + $("input[name='title_text']").val() + '&keywords=' + $("input[name='keywords_text']").val() + '&author=' + $("input[name='author_text']").val(), function (data) {
+                $("#record").empty();
+                $("#record").append('<p>  共 '+data.length+' 条记录</p>');
+                $("#record").append('<tr class="cardLayout"><th>title</th>' +
+                    '<th>content</th><th>source</th><th>author</th><th>key</th><th>date</th></tr>');
+                for (let i = 0; i < data.length; i++) {
+                    // console.log(i+": "+data[i])
+                    let table = '<tr class="cardLayout"><td>';
+                    table += ('<a href=' + data[i].url + '>' + data[i].title + '</a></td><td>');
+                    table += (data[i].content + '</td><td>');
+                    table += (data[i].source_name + '</td><td>');
+                    table += (data[i].author + '</td><td>');
+                    table += (data[i].keywords + '</td><td>');
+                    table += (data[i].publish_date.substring(0, 10) + '</td></tr>');  // 日期只取精确到日
+                    $("#record").append(table);
+                }
+            });
+        }
+    </script>
+
+</body>
+
+</html>
